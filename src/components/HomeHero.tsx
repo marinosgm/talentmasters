@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { NoiseBackgroundDemo } from "@/components/NoiseBackground";
 export default function HomeHero() {
   return (
     <section className="relative overflow-hidden">
@@ -33,18 +34,9 @@ export default function HomeHero() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="flex justify-center gap-4"
         >
-          <Link
-            href="/jobs"
-            className="bg-orange-500 text-black px-7 py-4 rounded-md font-medium hover:bg-orange-400 transition"
-          >
-            View Jobs
-          </Link>
-          <Link
-            href="/contact"
-            className="border border-white/20 px-7 py-4 rounded-md hover:border-orange-500 transition"
-          >
-            Hire Talent
-          </Link>
+
+ <NoiseBackgroundDemo />
+
         </motion.div>
       </div>
     </section>

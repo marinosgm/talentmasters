@@ -1,6 +1,7 @@
 import HomeHero from "@/components/HomeHero";
 import JobsPreview from "@/components/JobsPreview";
 import Link from "next/link";
+import { NoiseBackground } from "@/components/ui/noise-background";
 
 export default function Home() {
   return (

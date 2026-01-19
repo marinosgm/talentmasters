@@ -38,16 +38,14 @@ export default function ApplyPage() {
     try {
       setLoading(true);
 
-      /* 1️⃣ Ensure job exists (by slug) */
+      /* 1️⃣ Ensure job exists */
       const { data: job, error: jobError } = await supabase
         .from("jobs")
         .select("slug")
         .eq("slug", slug)
         .single();
 
-      if (!job || jobError) {
-        throw new Error("Job not found.");
-      }
+      if (!job || jobError) throw new Error("Job not found.");
 
       /* 2️⃣ Upload CV */
       const ext = file.name.split(".").pop();
@@ -57,18 +55,15 @@ export default function ApplyPage() {
         .from("cvs")
         .upload(filePath, file);
 
-      if (uploadError) {
-        console.error(uploadError);
-        throw new Error("CV upload failed.");
-      }
+      if (uploadError) throw new Error("CV upload failed.");
 
       const publicCvUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cvs/${filePath}`;
 
-      /* 3️⃣ Insert application (ONLY job_slug FK) */
+      /* 3️⃣ Insert application */
       const { error: insertError } = await supabase
         .from("applications")
         .insert({
-          job_slug: slug, // ✅ FK → jobs.slug
+          job_slug: slug,
           full_name: fullName,
           email,
           phone,
@@ -76,10 +71,25 @@ export default function ApplyPage() {
           status: "new",
         });
 
-      if (insertError) {
-        console.error(insertError);
-        throw new Error("Failed to submit application.");
-      }
+      if (insertError) throw new Error("Failed to submit application.");
+
+      /* 4️⃣ Trigger email (Edge Function) */
+      await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-application-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            job_slug: slug,
+            full_name: fullName,
+            email,
+            phone,
+            cv_url: publicCvUrl,
+          }),
+        }
+      );
 
       setSuccess(true);
     } catch (err: any) {
@@ -92,7 +102,11 @@ export default function ApplyPage() {
   if (success) {
     return (
       <section className="min-h-[70vh] flex items-center justify-center px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
           <h1 className="text-3xl font-bold mb-4 text-orange-500">
             Application submitted 🎉
           </h1>
