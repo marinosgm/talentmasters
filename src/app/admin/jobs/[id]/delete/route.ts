@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase-admin";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  await supabase.from("jobs").delete().eq("id", params.id);
+  const { id } = await params; // ✅ REQUIRED in Next.js 15
+
+  await supabaseAdmin
+    .from("jobs")
+    .delete()
+    .eq("id", id);
 
   return NextResponse.redirect(new URL("/admin/jobs", req.url));
 }

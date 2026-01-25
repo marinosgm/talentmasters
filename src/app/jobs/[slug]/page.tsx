@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseServer } from "@/lib/supabase-server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,7 +9,7 @@ export default async function JobDetailPage({
 }) {
   const { slug } = await params; // ✅ THIS IS THE FIX
 
-  const { data: job, error } = await supabase
+  const { data: job, error } = await supabaseServer
     .from("jobs")
     .select("*")
     .eq("slug", slug)

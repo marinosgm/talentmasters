@@ -1,8 +1,8 @@
-import { supabase } from "@/lib/supabase-admin";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import Link from "next/link";
 
 export default async function AdminJobsPage() {
-  const { data: jobs } = await supabase
+  const { data: jobs } = await supabaseAdmin
     .from("jobs")
     .select("id, title, slug, location, type")
     .order("created_at", { ascending: false });

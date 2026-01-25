@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { supabaseServer } from "@/lib/supabase-server";
 
 type Job = {
   id: string;
@@ -10,7 +10,7 @@ type Job = {
 };
 
 export default async function JobsPreview() {
-  const { data: jobs } = await supabase
+  const { data: jobs } = await supabaseServer
     .from("jobs")
     .select("id, title, slug, location, type")
     .order("created_at", { ascending: false })

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase-browser";
 
 export default function ApplyPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -51,11 +51,14 @@ export default function ApplyPage() {
       const ext = file.name.split(".").pop();
       const filePath = `${slug}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("cvs")
-        .upload(filePath, file);
+const { data, error: uploadError } = await supabase.storage
+  .from("cvs")
+  .upload(filePath, file);
 
-      if (uploadError) throw new Error("CV upload failed.");
+if (uploadError) {
+  console.error("UPLOAD ERROR:", uploadError);
+  throw new Error(uploadError.message);
+}
 
       const publicCvUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cvs/${filePath}`;
 

@@ -1,14 +1,16 @@
-import { supabase } from "@/lib/supabase-admin";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export default async function EditJobPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { data: job } = await supabase
+  const { id } = await params;
+
+  const { data: job } = await supabaseAdmin
     .from("jobs")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (!job) {
@@ -22,38 +24,15 @@ export default async function EditJobPage({
       </h1>
 
       <form
-        action={`/admin/jobs/${params.id}/update`}
+        action={`/admin/jobs/${id}/update`}
         method="post"
         className="space-y-6"
       >
-        <input
-          name="title"
-          defaultValue={job.title}
-          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md"
-        />
-
-        <input
-          name="location"
-          defaultValue={job.location}
-          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md"
-        />
-
-        <input
-          name="type"
-          defaultValue={job.type}
-          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md"
-        />
-
-        <textarea
-          name="description"
-          defaultValue={job.description}
-          rows={5}
-          className="w-full bg-black border border-white/20 px-4 py-3 rounded-md"
-        />
-
-        <button className="bg-orange-500 text-black px-8 py-4 rounded-md font-medium hover:bg-orange-400 transition">
-          Save Changes
-        </button>
+        <input name="title" defaultValue={job.title} />
+        <input name="location" defaultValue={job.location} />
+        <input name="type" defaultValue={job.type} />
+        <textarea name="description" defaultValue={job.description} />
+        <button>Save</button>
       </form>
     </section>
   );

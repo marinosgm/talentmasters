@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { NoiseBackgroundDemo } from "@/components/NoiseBackground";
+import { BackgroundBeamsWithCollisionDemo } from "./BackgroundBeamsWithCollision";
 export default function HomeHero() {
   return (
     <section className="relative overflow-hidden">
@@ -36,8 +37,10 @@ export default function HomeHero() {
         >
 
  <NoiseBackgroundDemo />
+               <BackgroundBeams />
 
         </motion.div>
+
       </div>
     </section>
     
