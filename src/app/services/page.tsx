@@ -69,11 +69,34 @@ function ServiceCard({
 function Divider() {
   return (
     <div className="relative my-16">
+      {/* base line */}
       <div className="h-px w-full bg-white/10" />
-      <div className="absolute left-0 top-1/2 h-px w-48 -translate-y-1/2 bg-orange-500/40 blur-[1px]" />
+
+      {/* moving orange sweep */}
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, transparent 0%, rgba(249,115,22,0) 38%, rgba(249,115,22,0.65) 50%, rgba(249,115,22,0) 62%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          backgroundPosition: "0% 50%",
+          filter: "blur(0.4px)",
+        }}
+        animate={{
+          backgroundPosition: ["0% 50%", "100% 50%"],
+        }}
+        transition={{
+          duration: 2.8,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      />
     </div>
   );
 }
+
+
 
 export default function ServicesPage() {
   return (

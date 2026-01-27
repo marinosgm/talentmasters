@@ -110,12 +110,15 @@ export default async function JobsPage({
             <p className="mt-1 text-sm text-white/70">
               Send a short intro + CV and we’ll reach out when something fits.
             </p>
-            <Link
-              href="/contact"
-              className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-orange-500 px-4 py-2.5 font-semibold text-black transition hover:opacity-90"
-            >
-              Contact us
-            </Link>
+            <a
+  href="https://wa.me/35797678927"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-orange-500 px-4 py-2.5 font-semibold text-black transition hover:opacity-90"
+>
+  Contact us
+</a>
+
           </div>
         </div>
 
@@ -219,12 +222,15 @@ export default async function JobsPage({
               >
                 View all roles
               </Link>
-              <Link
-                href="/contact"
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 font-semibold text-white transition hover:border-white/20"
-              >
-                Contact us
-              </Link>
+              <a
+  href="https://wa.me/35797678927"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 font-semibold text-white transition hover:border-white/20"
+>
+  Contact us
+</a>
+
             </div>
           </div>
         ) : (
