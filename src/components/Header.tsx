@@ -7,6 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  const navItems = [
+    { label: "Jobs", href: "/jobs" },
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -18,20 +24,16 @@ export default function Header() {
           Talent<span className="text-orange-500">masters</span>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-sm">
-          {["Jobs", "Clients", "Candidates", "About"].map((item) => (
+          {navItems.map((item) => (
             <Link
-              key={item}
-              href={
-                item === "Jobs"
-                  ? "/jobs"
-                  : `/services/${item.toLowerCase()}`
-              }
+              key={item.label}
+              href={item.href}
               className="relative text-white/80 hover:text-white transition"
             >
               <span className="after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-orange-500 after:transition-all hover:after:w-full">
-                {item}
+                {item.label}
               </span>
             </Link>
           ))}
@@ -44,10 +46,11 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Mobile Button */}
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-white text-2xl"
           onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
         >
           ☰
         </button>
@@ -63,21 +66,21 @@ export default function Header() {
             className="md:hidden overflow-hidden bg-black border-t border-white/10"
           >
             <div className="flex flex-col px-6 py-4 gap-4">
-              <Link href="/jobs" className="text-white">
-                Jobs
-              </Link>
-              <Link href="/services/clients" className="text-white">
-                For Clients
-              </Link>
-              <Link href="/services/candidates" className="text-white">
-                For Candidates
-              </Link>
-              <Link href="/about" className="text-white">
-                About
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+
               <Link
                 href="/contact"
-                className="bg-orange-500 text-black text-center py-2 rounded-md"
+                className="bg-orange-500 text-black text-center py-2 rounded-md font-medium"
+                onClick={() => setOpen(false)}
               >
                 Hire Talent
               </Link>

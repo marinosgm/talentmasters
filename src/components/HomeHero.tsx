@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import { NoiseBackgroundDemo } from "@/components/NoiseBackground";
 import { BackgroundBeamsWithCollisionDemo } from "./BackgroundBeamsWithCollision";
+import { NoiseBackgroundDemo } from "./NoiseBackground";
 export default function HomeHero() {
   return (
     <section className="relative overflow-hidden">
@@ -35,8 +35,7 @@ export default function HomeHero() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="flex justify-center gap-4"
         >
-
- <NoiseBackgroundDemo />
+          <NoiseBackgroundDemo />
                <BackgroundBeams />
 
         </motion.div>

@@ -5,21 +5,24 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params; // ✅ REQUIRED
+  const { id } = await params;
 
   const formData = await req.formData();
 
-  await supabaseAdmin
+  const title = String(formData.get("title") || "");
+  const location = String(formData.get("location") || "");
+  const type = String(formData.get("type") || "Onsite"); // Onsite/Hybrid/Remote
+  const description = String(formData.get("description") || "");
+
+  const { error } = await supabaseAdmin
     .from("jobs")
-    .update({
-      title: formData.get("title"),
-      location: formData.get("location"),
-      type: formData.get("type"),
-      description: formData.get("description"),
-    })
+    .update({ title, location, type, description })
     .eq("id", id);
 
-  return NextResponse.redirect(
-    new URL("/admin/jobs", req.url)
-  );
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  // ✅ 303 = redirect to GET /admin/jobs (no POST re-submit)
+  return NextResponse.redirect(new URL("/admin/jobs", req.url), 303);
 }

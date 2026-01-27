@@ -39,5 +39,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.redirect(new URL("/jobs", req.url));
+return NextResponse.redirect(new URL("/admin/jobs", req.url));
 }
