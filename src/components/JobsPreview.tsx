@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase-server";
 
+// ✅ If your Next version doesn't support noStore(), this forces dynamic for this component
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 type Job = {
   id: string;
   title: string;
@@ -18,11 +22,16 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 export default async function JobsPreview() {
-  const { data: jobs } = await supabaseServer
+  const { data: jobs, error } = await supabaseServer
     .from("jobs")
     .select("id, title, slug, location, type, created_at")
     .order("created_at", { ascending: false })
     .limit(3);
+
+  if (error) {
+    // Optional: fail silently in production UI
+    return null;
+  }
 
   if (!jobs || jobs.length === 0) return null;
 
@@ -75,7 +84,10 @@ export default async function JobsPreview() {
                 </div>
 
                 <div className="mt-5 inline-flex items-center gap-2 text-orange-500 text-sm font-semibold">
-                  View role <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                  View role{" "}
+                  <span className="transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
                 </div>
               </div>
             </Link>
