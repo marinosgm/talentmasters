@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase-server";
 
-// ✅ If your Next version doesn't support noStore(), this forces dynamic for this component
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 
 type Job = {
   id: string;
