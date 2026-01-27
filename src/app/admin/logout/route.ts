@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
-import { createServerClient } from "@supabase/auth-helpers-nextjs";
 import type { NextRequest } from "next/server";
+import { createServerClient } from "@supabase/auth-helpers-nextjs";
 
 export async function POST(req: NextRequest) {
-  const res = NextResponse.redirect(new URL("/admin/login", req.url));
+  // 303 is best practice after POST -> GET
+  const res = NextResponse.redirect(new URL("/admin/login", req.url), {
+    status: 303,
+  });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,7 +20,8 @@ export async function POST(req: NextRequest) {
           res.cookies.set({ name, value, ...options });
         },
         remove(name: string, options: any) {
-          res.cookies.set({ name, value: "", ...options });
+          // ensure deletion
+          res.cookies.set({ name, value: "", ...options, maxAge: 0 });
         },
       },
     }
