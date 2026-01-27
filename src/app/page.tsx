@@ -10,7 +10,10 @@ const STATS = [
 ];
 
 const COMPANY_POINTS = [
-  { title: "Pre-vetted shortlists", text: "Senior screening, calibrated to your business phase." },
+  {
+    title: "Pre-vetted shortlists",
+    text: "Senior screening, calibrated to your business phase.",
+  },
   { title: "Speed without shortcuts", text: "Fast cycles with discipline, not volume." },
   { title: "Operator-led execution", text: "We run the process end-to-end with discretion." },
 ];
@@ -41,7 +44,7 @@ function GlowCard({
     <div
       className={[
         "group relative overflow-hidden rounded-3xl border border-white/10",
-        "bg-neutral-950/70 p-8 backdrop-blur-xl",
+        "bg-neutral-950/70 backdrop-blur-xl", // removed fixed padding
         "shadow-[0_12px_40px_rgba(0,0,0,0.55)]",
         "transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_70px_rgba(0,0,0,0.75)]",
         className,
@@ -69,60 +72,78 @@ export default function Home() {
       {/* Client component (animations) */}
       <HomeHero />
 
-      {/* STATS */}
-      <section className="relative border-t border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,165,0,0.10),transparent_60%)]" />
-        <div className="relative max-w-7xl mx-auto px-6 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {STATS.map((stat) => (
-              <GlowCard key={stat.label} className="p-6">
-                <p className="text-3xl font-semibold text-orange-500">
-                  {stat.value}
-                </p>
-                <p className="text-white/60 mt-2">{stat.label}</p>
-              </GlowCard>
-            ))}
-          </div>
-        </div>
-      </section>
+{/* STATS */}
+<section className="relative overflow-hidden border-t border-white/10">
+  {/* Background glow (not cropped) */}
+  <div className="pointer-events-none absolute inset-0">
+    {/* main glow */}
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(249,115,22,0.16),transparent_62%)]" />
+    {/* soft fade into next section */}
+    <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black" />
+  </div>
+
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-20 sm:pb-28">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {STATS.map((stat) => (
+        <GlowCard key={stat.label} className="p-4 sm:p-6">
+          <p className="text-[clamp(22px,6vw,34px)] font-semibold text-orange-500">
+            {stat.value}
+          </p>
+          <p className="text-white/60 mt-2 text-sm sm:text-base">
+            {stat.label}
+          </p>
+        </GlowCard>
+      ))}
+    </div>
+  </div>
+</section>
+
+
 
       {/* VALUE PROPS (BENTO) */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="flex flex-col gap-6">
           <SectionLabel>WHO WE SERVE</SectionLabel>
-          <h2 className="text-4xl font-medium max-w-3xl">
+
+          <h2 className="text-[clamp(28px,6.5vw,40px)] font-medium max-w-3xl leading-tight">
             Two-sided execution. One standard:{" "}
             <span className="text-orange-500">quality.</span>
           </h2>
-          <p className="text-white/60 text-lg max-w-3xl">
+
+          <p className="text-white/60 text-base sm:text-lg max-w-3xl">
             We support companies with precision hiring and candidates with
             high-signal career outcomes — with discretion on both sides.
           </p>
         </div>
 
-        <div className="mt-14 grid md:grid-cols-4 gap-6 auto-rows-[220px]">
+        {/* IMPORTANT: no fixed auto-rows on mobile */}
+        <div className="mt-10 sm:mt-14 grid gap-4 sm:gap-6 md:grid-cols-4 md:auto-rows-[220px]">
           {/* Companies (big) */}
-          <GlowCard className="md:col-span-2 md:row-span-2">
-            <p className="text-sm uppercase tracking-widest text-white/40 mb-3">
+          <GlowCard className="md:col-span-2 md:row-span-2 p-5 sm:p-8">
+            <p className="text-xs sm:text-sm uppercase tracking-widest text-white/40 mb-3">
               For Companies
             </p>
-            <h3 className="text-2xl font-medium mb-6">
+            <h3 className="text-[clamp(20px,5.5vw,28px)] font-medium mb-5 sm:mb-6">
               Senior search delivery, without the agency noise.
             </h3>
 
-            <div className="space-y-5 text-white/70">
+            <div className="space-y-4 sm:space-y-5 text-white/70">
               {COMPANY_POINTS.map((p) => (
                 <div key={p.title}>
-                  <p className="text-white font-medium">{p.title}</p>
-                  <p className="text-white/60">{p.text}</p>
+                  <p className="text-white font-medium text-sm sm:text-base">
+                    {p.title}
+                  </p>
+                  <p className="text-white/60 text-sm sm:text-base leading-relaxed">
+                    {p.text}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
               >
                 Explore services
               </Link>
@@ -130,27 +151,31 @@ export default function Home() {
           </GlowCard>
 
           {/* Candidates (big) */}
-          <GlowCard className="md:col-span-2 md:row-span-2">
-            <p className="text-sm uppercase tracking-widest text-white/40 mb-3">
+          <GlowCard className="md:col-span-2 md:row-span-2 p-5 sm:p-8">
+            <p className="text-xs sm:text-sm uppercase tracking-widest text-white/40 mb-3">
               For Candidates
             </p>
-            <h3 className="text-2xl font-medium mb-6">
+            <h3 className="text-[clamp(20px,5.5vw,28px)] font-medium mb-5 sm:mb-6">
               Opportunities with clarity, not generic outreach.
             </h3>
 
-            <div className="space-y-5 text-white/70">
+            <div className="space-y-4 sm:space-y-5 text-white/70">
               {CANDIDATE_POINTS.map((p) => (
                 <div key={p.title}>
-                  <p className="text-white font-medium">{p.title}</p>
-                  <p className="text-white/60">{p.text}</p>
+                  <p className="text-white font-medium text-sm sm:text-base">
+                    {p.title}
+                  </p>
+                  <p className="text-white/60 text-sm sm:text-base leading-relaxed">
+                    {p.text}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <Link
                 href="/jobs"
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all hover:bg-white/[0.05] active:scale-[0.99]"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(0,0,0,0.35)] transition-all hover:bg-white/[0.05] active:scale-[0.99]"
               >
                 View open roles
               </Link>
@@ -160,71 +185,72 @@ export default function Home() {
       </section>
 
       {/* JOBS PREVIEW */}
-      <section className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="flex items-end justify-between gap-8 mb-10">
-            <div>
-              <SectionLabel>OPEN ROLES</SectionLabel>
-              <h2 className="mt-6 text-4xl font-medium">
-                Current opportunities
-              </h2>
-              <p className="mt-3 text-white/60 text-lg max-w-2xl">
-                A curated set of roles where impact and fit matter more than volume.
-              </p>
-            </div>
+<section className="border-t border-white/10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+    {/* Header */}
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-6 sm:mb-10">
+      <div>
+        <SectionLabel>OPEN ROLES</SectionLabel>
 
-            <Link
-              href="/jobs"
-              className="hidden md:inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/[0.05]"
-            >
-              View all roles
-            </Link>
-          </div>
+        <h2 className="mt-4 sm:mt-6 text-[clamp(24px,6vw,40px)] font-medium leading-tight">
+          Current opportunities
+        </h2>
 
-          <GlowCard className="p-0">
-            <div className="p-8">
-              <JobsPreview />
-            </div>
-          </GlowCard>
+        <p className="mt-3 text-white/60 text-sm sm:text-lg max-w-2xl">
+          A curated set of roles where impact and fit matter more than volume.
+        </p>
+      </div>
 
-          <div className="mt-10 md:hidden">
-            <Link
-              href="/jobs"
-              className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/[0.05]"
-            >
-              View all roles
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Link
+        href="/jobs"
+        className="hidden sm:inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.06]"
+      >
+        View all roles →
+      </Link>
+    </div>
+
+    {/* Content */}
+    <GlowCard className="p-0">
+      <div className="p-4 sm:p-8">
+        <JobsPreview />
+      </div>
+    </GlowCard>
+
+
+  </div>
+</section>
+
 
       {/* FINAL CTA */}
       <section className="relative border-t border-white/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,165,0,0.10),transparent_65%)]" />
-        <div className="relative max-w-7xl mx-auto px-6 py-24">
-          <GlowCard className="p-10">
-            <p className="text-sm uppercase tracking-[0.22em] text-white/50">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+          <GlowCard className="p-6 sm:p-10">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.22em] text-white/50">
               DISCRETION. SPEED. SENIORITY.
             </p>
-            <h2 className="mt-4 text-4xl font-semibold leading-tight max-w-3xl">
-              Ready to hire{" "}
-              <span className="text-orange-500">great talent</span>?
+
+            <h2 className="mt-4 text-[clamp(26px,6.5vw,42px)] font-semibold leading-tight max-w-3xl">
+              Ready to hire <span className="text-orange-500">great talent</span>?
             </h2>
-            <p className="mt-4 text-white/60 text-lg max-w-3xl">
+
+            <p className="mt-4 text-white/60 text-base sm:text-lg max-w-3xl">
               Engage us when the cost of getting it wrong is too high.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-4 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <a
+                href="https://wa.me/35799977941?text=Hi%20I%27d%20like%20to%20discuss%20hiring"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-orange-500 px-8 py-4 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
               >
-                Talk to us
-              </Link>
+                Talk to us on WhatsApp
+              </a>
 
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-white/[0.05] active:scale-[0.99]"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-white/[0.05] active:scale-[0.99]"
               >
                 View services
               </Link>
