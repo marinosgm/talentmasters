@@ -240,7 +240,7 @@ export default function Home() {
 
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a
-                href="https://wa.me/35799977941?text=Hi%20I%27d%20like%20to%20discuss%20hiring"
+                href="https://wa.me/35797678927?text=Hi%20I%27d%20like%20to%20discuss%20hiring"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-orange-500 px-8 py-4 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
