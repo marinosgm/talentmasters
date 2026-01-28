@@ -78,11 +78,11 @@ export default function Header() {
               ))}
 
               <Link
-                href="/contact"
+                href="/jobs"
                 className="bg-orange-500 text-black text-center py-2 rounded-md font-medium"
                 onClick={() => setOpen(false)}
               >
-                Hire Talent
+                Apply Now
               </Link>
             </div>
           </motion.div>
