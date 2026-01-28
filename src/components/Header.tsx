@@ -39,10 +39,10 @@ export default function Header() {
           ))}
 
           <Link
-            href="/contact"
+            href="/jobs"
             className="ml-4 bg-orange-500 text-black px-5 py-2 rounded-md font-medium hover:bg-orange-400 transition"
           >
-            Hire Talent
+            Apply Now
           </Link>
         </nav>
 

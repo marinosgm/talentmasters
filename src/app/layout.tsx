@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CookieBanner } from "@/components/CookiesBanner"; // ✅ add this
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,9 @@ export default function RootLayout({
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
+
+        {/* ✅ Cookie banner appears globally */}
+        <CookieBanner />
       </body>
     </html>
   );

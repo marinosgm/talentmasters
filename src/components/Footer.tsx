@@ -6,10 +6,12 @@ export default function Footer() {
           © {new Date().getFullYear()} Talentmasters. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <a href="/privacy-policy" className="hover:text-white">
+          <a href="/policy" className="hover:text-white">
             Privacy
           </a>
-          <a href="/contact" className="hover:text-white">
+          <a   href="https://wa.me/35797678927?text=Hi%20I%27d%20like%20to%20request%20a%20conversation"
+  target="_blank"
+  rel="noopener noreferrer" className="hover:text-white">
             Contact
           </a>
         </div>

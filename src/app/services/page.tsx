@@ -369,12 +369,15 @@ export default function ServicesPage() {
                 </p>
               </div>
 
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
-              >
-                Request a conversation
-              </a>
+             <a
+  href="https://wa.me/35797678927?text=Hi%20I%27d%20like%20to%20request%20a%20conversation"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-black shadow-[0_14px_40px_rgba(249,115,22,0.35)] transition-transform hover:scale-[1.02] active:scale-[0.99]"
+>
+  Request a conversation
+</a>
+
             </div>
           </motion.div>
         </div>
