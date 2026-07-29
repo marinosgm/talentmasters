@@ -1,31 +1,58 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { createServerClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  if (!req.nextUrl.pathname.startsWith("/admin")) {
+  const pathname = req.nextUrl.pathname;
+
+  // Only protect /admin routes
+  if (!pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
 
-  if (req.nextUrl.pathname === "/admin/login") {
+  // Login page must remain public
+  if (pathname === "/admin/login") {
     return NextResponse.next();
   }
 
-  const res = NextResponse.next();
+  let response = NextResponse.next({
+    request: req,
+  });
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("Missing Supabase environment variables");
+
+    return NextResponse.redirect(
+      new URL("/admin/login?error=config", req.url)
+    );
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
-        get(name: string) {
-          return req.cookies.get(name)?.value;
+        getAll() {
+          return req.cookies.getAll();
         },
-        set(name: string, value: string, options: any) {
-          res.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options: any) {
-          res.cookies.set({ name, value: "", ...options });
+
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => {
+            req.cookies.set(name, value);
+          });
+
+          response = NextResponse.next({
+            request: req,
+          });
+
+          cookiesToSet.forEach(
+            ({ name, value, options }) => {
+              response.cookies.set(name, value, options);
+            }
+          );
         },
       },
     }
@@ -33,23 +60,39 @@ export async function middleware(req: NextRequest) {
 
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+  if (userError || !user) {
+    const loginUrl = new URL("/admin/login", req.url);
+    loginUrl.searchParams.set("next", pathname);
+
+    return NextResponse.redirect(loginUrl);
   }
 
-  const { data: admin } = await supabase
+  const { data: admin, error: adminError } = await supabase
     .from("admins")
     .select("user_id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
-  if (!admin) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+  if (adminError) {
+    console.error("Admin verification failed:", adminError.message);
+
+    return NextResponse.redirect(
+      new URL("/admin/login?error=admin-check", req.url)
+    );
   }
 
-  return res;
+  if (!admin) {
+    await supabase.auth.signOut();
+
+    return NextResponse.redirect(
+      new URL("/admin/login?error=unauthorized", req.url)
+    );
+  }
+
+  return response;
 }
 
 export const config = {
