@@ -1,26 +1,34 @@
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET(request: Request) {
-  const cookieStore = await cookies();
+async function logout(request: NextRequest) {
+  let response = NextResponse.redirect(
+    new URL("/admin/login", request.url)
+  );
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.redirect(
+      new URL("/admin/login?error=config", request.url)
+    );
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
-          return cookieStore.getAll();
+          return request.cookies.getAll();
         },
+
         setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
-            });
-          } catch {
-            // Cookie writes may fail in some rendering contexts.
-          }
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
         },
       },
     }
@@ -28,5 +36,13 @@ export async function GET(request: Request) {
 
   await supabase.auth.signOut();
 
-  return NextResponse.redirect(new URL("/admin/login", request.url));
+  return response;
+}
+
+export async function GET(request: NextRequest) {
+  return logout(request);
+}
+
+export async function POST(request: NextRequest) {
+  return logout(request);
 }
