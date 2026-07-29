@@ -32,11 +32,17 @@ export default function AdminTopbar({ email }: { email?: string | null }) {
             </span>
           ) : null}
 
-          <form action="/admin/logout" method="post">
-            <button className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/70 hover:bg-white/[0.06] hover:text-orange-300">
-              Logout
-            </button>
-          </form>
+          <Link
+
+  href="/admin/logout"
+
+  className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/70 hover:bg-white/[0.06] hover:text-orange-300"
+
+>
+
+  Logout
+
+</Link>
         </div>
       </div>
 
